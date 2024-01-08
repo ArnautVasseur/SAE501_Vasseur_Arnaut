@@ -3,26 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration</title>
+    <title>User Registration and Login</title>
 </head>
 <body>
     <h2>Create an Account</h2>
     <form id="registrationForm">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+        <label for="regEmail">Email:</label>
+        <input type="email" id="regEmail" name="email" required>
         
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+        <label for="regPassword">Password:</label>
+        <input type="password" id="regPassword" name="password" required>
 
         <input type="button" value="Create Account" onclick="registerUser()">
     </form>
 
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="loginEmail">Email:</label>
+        <input type="email" id="loginEmail" name="email" required>
+        
+        <label for="loginPassword">Password:</label>
+        <input type="password" id="loginPassword" name="password" required>
+
+        <input type="button" value="Login" onclick="loginUser()">
+    </form>
+
     <script>
         function registerUser() {
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
+            var email = document.getElementById('regEmail').value;
+            var password = document.getElementById('regPassword').value;
 
-            // Send a POST request to the server
+            // Send a POST request to the server for registration
             fetch('/register', {
                 method: 'POST',
                 headers: {
@@ -38,6 +49,34 @@
             .catch(error => {
                 console.error('Error:', error);
                 // Handle errors
+            });
+        }
+
+        function loginUser() {
+            var email = document.getElementById('loginEmail').value;
+            var password = document.getElementById('loginPassword').value;
+
+            // Send a POST request to the server for login
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email, password: password }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // Handle the response as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors, including non-JSON responses
             });
         }
     </script>

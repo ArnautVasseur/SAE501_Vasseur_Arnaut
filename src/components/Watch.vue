@@ -52,7 +52,7 @@ const animate = () => {
 
  function onLoaded(collada) {
 	  let objects = collada.scene;
-        scene.add(objects);
+      scene.add(objects);
     let dt = clock.getElapsedTime();
     console.log("Loading completed after "+dt+" s.");
   }
