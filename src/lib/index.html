@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>Create an Account</h2>
+    <form id="registrationForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <input type="button" value="Create Account" onclick="registerUser()">
+    </form>
+
+    <script>
+        function registerUser() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            // Send a POST request to the server
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email, password: password }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                // Handle the response as needed
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Handle errors
+            });
+        }
+    </script>
+</body>
+</html>
