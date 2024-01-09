@@ -6,8 +6,6 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-const bcrypt = require('bcrypt');
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,10 +23,24 @@ app.get('/', (req, res) => {
 
 app.get('/montres', (req, res) => {
     db.all(
-      '',
+      `SELECT
+        Montre.montreID,
+        Boitier.nom AS boitier_nom,
+        Boitier.prix AS boitier_prix,
+        Boitier.texture AS boitier_texture,
+        Pierre.nom AS pierre_nom,
+        Pierre.prix AS pierre_prix,
+        Bracelet.nom AS bracelet_nom,
+        Bracelet.prix AS bracelet_prix,
+        Bracelet.texture AS bracelet_texture
+      FROM
+        Montre
+      JOIN Boitier ON Montre.boitierID = Boitier.boitierID
+      JOIN Pierre ON Montre.pierreID = Pierre.pierreID
+      JOIN Bracelet ON Montre.braceletID = Bracelet.braceletID;`,
      (err, rows) => {
         if (err) {
-            console.error('Error fetching recipes:', err.message);
+            console.error('Error fetching watches:', err.message);
             res.status(500).json({ error: 'Internal server error' });
             return;
         }

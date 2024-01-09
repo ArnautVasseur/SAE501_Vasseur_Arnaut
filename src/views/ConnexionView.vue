@@ -39,7 +39,7 @@ export default {
   methods: {
     inscrire() {
       axios
-        .post('http://localhost:4000/inscription', {
+        .post('http://localhost:3000/login', {
           NomUser: this.inscriptionNom,
           MotDePasse: this.inscriptionMotDePasse
         })
@@ -52,7 +52,7 @@ export default {
     },
     connecter() {
       axios
-        .post('http://localhost:4000/connexion', {
+        .post('http://localhost:3000/login', {
           NomUser: this.connexionNom,
           MotDePasse: this.connexionMotDePasse
         })

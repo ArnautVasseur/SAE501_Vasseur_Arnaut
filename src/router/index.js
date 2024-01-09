@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/ConnexionView.vue'
+import ConnexionView from '../views/ConnexionView.vue'
+import DeconnexionView from '../views/DeconnexionView.vue'
 import WatchView from '../views/WatchesView.vue'
 import CartView from '../views/CartView.vue'
 
@@ -13,9 +14,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/auth',
-      name: 'auth',
-      component: LoginView
+      path: '/login',
+      name: 'login',
+      component: ConnexionView
     },
     {
       path: '/watch',
@@ -23,9 +24,14 @@ const router = createRouter({
       component: WatchView
     },
     {
+      path: '/signout',
+      name: 'signout',
+      component: DeconnexionView,
+    },
+    {
       path: '/cart',
       name: 'cart',
-      component: CartView
+      component: CartView,
     },
   ]
 })
