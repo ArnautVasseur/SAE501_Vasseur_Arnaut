@@ -83,9 +83,6 @@ app.get('/panier/:userID', (req, res) => {
         });
 });
 
-
-
-
 app.post('/panier/:userID/add/montre', (req, res) => {
     const { userID } = req.params;
     const { montreID } = req.body;
