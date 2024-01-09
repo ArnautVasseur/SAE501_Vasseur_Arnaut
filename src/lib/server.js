@@ -6,6 +6,8 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+const bcrypt = require('bcrypt');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -22,7 +24,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/montres', (req, res) => {
-    db.all('SELECT * FROM Montre', (err, rows) => {
+    db.all(
+      '',
+     (err, rows) => {
         if (err) {
             console.error('Error fetching recipes:', err.message);
             res.status(500).json({ error: 'Internal server error' });
@@ -188,60 +192,62 @@ app.post('/panier/:userID/remove/montre', (req, res) => {
     }
 });
 
+app.post('/inscription', (req, res) => {
+  const { NomUser, MotDePasse } = req.body;
 
-app.post('/register', (req, res) => {
-  const { email, password } = req.body;
+  const hashMotDePasse = bcrypt.hashSync(MotDePasse, 10);
 
-  // Step 1: Insert user into the User table
-  const sqlInsertUser = `INSERT INTO User (email, password) VALUES (?, ?)`;
-  db.run(sqlInsertUser, [email, password], function (err) {
+  const query = 'INSERT INTO Utilisateurs (NomUser, MotDePasse) VALUES (?, ?)';
+  db.run(query, [NomUser, hashMotDePasse], function (err) {
     if (err) {
-      console.error('Error creating account:', err.message);
-      res.status(500).json({ error: 'Internal server error' });
-      return;
+      return res.status(500).json({ error: err.message });
     }
-    const userId = this.lastID;
-    // Step 2: Generate a unique identifier for panierID (e.g., auto-incremented value)
-    const panierID = userId;
-    // Step 3: Update panierID with the generated value
-    const sqlUpdatePanierID = `UPDATE User SET panierID = ? WHERE email = ?`;
-    db.run(sqlUpdatePanierID, [panierID, email], function (err) {
-      if (err) {
-        console.error('Error updating panierID:', err.message);
-        res.status(500).json({ error: 'Internal server error' });
-        return;
-      }
 
-      console.log(`Account created with email: ${email}, panierID: ${panierID}`);
-      res.json({ message: 'Account created successfully' });
-    });
+    res.json({ UserID: this.lastID });
   });
 });
 
+app.post('/connexion', (req, res) => {
+  const { NomUser, MotDePasse } = req.body;
 
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
+  const query = 'SELECT * FROM Utilisateurs WHERE NomUser = ?';
+  db.get(query, [NomUser], (err, Utilisateur) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
 
-    // Check the User table for a matching email and password
-    const sql = `SELECT * FROM User WHERE email = ? AND password = ?`;
-    db.get(sql, [email, password], (err, row) => {
-        if (err) {
-            console.error('Error during login:', err.message);
-            res.status(500).json({ error: 'Internal server error' });
-            return;
-        }
+    if (!Utilisateur || !bcrypt.compareSync(MotDePasse, Utilisateur.MotDePasse)) {
+      return res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect' });
+    }
 
-        if (row) {
-            console.log('Login successful');
-            res.json({ message: 'Login successful' });
-            identifiant = email
-            test = password
-            
-        } else {
-            console.log('Invalid email or password');
-            res.status(401).json({ error: 'Invalid email or password' });
-        }
-    });
+    // Créer un token JWT
+    const token = jwt.sign({ UserID: Utilisateur.UserID }, 'votre_clé_secrète', { expiresIn: '1h' });
+
+    res.json({ token, UserID: Utilisateur.UserID });
+  });
+});
+
+// Middleware pour vérifier le token sur les requêtes protégées
+function verifierToken(req, res, next) {
+  const token = req.header('Authorization');
+
+  if (!token) {
+    return res.status(401).json({ error: 'Accès non autorisé' });
+  }
+
+  jwt.verify(token, 'votre_clé_secrète', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ error: 'Token non valide' });
+    }
+
+    req.UserID = decoded.UserID;
+    next();
+  });
+}
+
+// Exemple de route protégée
+app.get('/exempleroute', verifierToken, (req, res) => {
+  res.json({ message: 'Route protégée accessible' });
 });
 
 app.listen(port, () => {
