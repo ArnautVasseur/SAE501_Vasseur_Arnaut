@@ -4,7 +4,7 @@ import ConnexionView from '../views/ConnexionView.vue'
 import DeconnexionView from '../views/DeconnexionView.vue'
 import WatchView from '../views/WatchesView.vue'
 import WatchDetails from '../views/WatchDetails.vue'
-import CartView from '../views/CartView.vue'
+import PanierView from '../views/CartView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,9 +36,10 @@ const router = createRouter({
       component: DeconnexionView,
     },
     {
-      path: '/cart',
-      name: 'cart',
-      component: CartView,
+      path: '/panier/:id',
+      name: 'panier',
+      component: PanierView,
+      props: true,
     },
   ]
 })

@@ -8,7 +8,6 @@ import { RouterLink, RouterView } from 'vue-router'
       <RouterLink to="/">Page d'accueil</RouterLink>
       <RouterLink to="/watch">Montres Prédéfinies</RouterLink>
       <RouterLink to="/login">Compte</RouterLink>
-      <RouterLink to="/cart">Votre panier</RouterLink>
     </nav>
   </header>
   <RouterView />

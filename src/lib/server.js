@@ -160,7 +160,31 @@ app.get('/panier/:userID', (req, res) => {
     const getCountQuery = 'SELECT COUNT(DISTINCT montreID) as montreCount FROM Panier WHERE userID = ?';
 
     // Query to get the individual montreID values
-    const getMontreIDQuery = 'SELECT DISTINCT montreID FROM Panier WHERE userID = ?';
+    const getMontreIDQuery = `
+      SELECT
+        Montre.montreID,
+        Boitier.nom AS boitier_nom,
+        Boitier.prix AS boitier_prix,
+        Boitier.texture AS boitier_texture,
+        Pierre.nom AS pierre_nom,
+        Pierre.prix AS pierre_prix,
+        Bracelet.texture AS bracelet_texture,
+        Bracelet.prix AS bracelet_prix
+      FROM
+        Panier
+      JOIN
+        User ON Panier.userID = User.userID
+      JOIN
+        Montre ON Panier.montreID = Montre.montreID
+      JOIN
+        Boitier ON Montre.boitierID = Boitier.boitierID
+      JOIN
+        Pierre ON Montre.pierreID = Pierre.pierreID
+      JOIN
+        Bracelet ON Montre.braceletID = Bracelet.braceletID
+      WHERE
+        Panier.userID = ?;
+      `;
 
     // Execute both queries in parallel using Promise.all
     Promise.all([
@@ -178,14 +202,14 @@ app.get('/panier/:userID', (req, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve({ montreIDList: rows.map(row => row.montreID) });
+                    resolve({ montreData: rows });
                 }
             });
         }),
     ])
         .then(results => {
-            const [countResult, montreIDResult] = results;
-            res.json({ ...countResult, ...montreIDResult });
+            const [countResult, montreResult] = results;
+            res.json({ ...countResult, ...montreResult });
         })
         .catch(err => {
             console.error('Error fetching cart data:', err.message);
@@ -193,110 +217,6 @@ app.get('/panier/:userID', (req, res) => {
         });
 });
 
-app.post('/panier/:userID/add/montre', (req, res) => {
-    const { userID } = req.params;
-    const { montreID } = req.body;
-  
-    // Check if the cart exists
-    db.get('SELECT * FROM Panier WHERE panierID = ?', [userID], (err, cart) => {
-      if (err) {
-        console.error('Error checking cart existence:', err.message);
-        res.status(500).json({ error: 'Internal server error' });
-        return;
-      }
-      if (!cart) {
-        res.status(404).json({ error: 'Cart not found' });
-        return;
-      }
-  
-      // Check if the watch exists in the Montre table
-      db.get('SELECT * FROM Montre WHERE montreID = ?', [montreID], (err) => {
-        if (err) {
-          console.error('Error checking watch existence:', err.message);
-          res.status(500).json({ error: 'Internal server error' });
-          return;
-        }
-        else{
-          insertWatchIntoCart();
-        }
-      });
-    });
-  
-    function insertWatchIntoCart() {
-      // Insert the watch into the Panier table
-      db.run('INSERT INTO Panier (panierID, montreID) VALUES (?, ?)', [userID, montreID], function (err) {
-        if (err) {
-          console.error('Error adding watch to the cart:', err.message);
-          res.status(500).json({ error: 'Internal server error' });
-          return;
-        }
-  
-        // Fetch the updated cart for this specific user
-        db.all('SELECT * from Panier WHERE panierID = ?', [userID], (err, cart) => {
-          if (err) {
-            console.error('Error fetching cart: ', err.message);
-            res.status(500).json({ error: 'Internal server error' });
-            return;
-          }
-          res.json(cart); // Return the updated list of ingredients as a JSON response
-        });
-      });
-    }
-});
-
-app.post('/panier/:userID/remove/montre', (req, res) => {
-    const { userID } = req.params;
-    const { montreID } = req.body;
-
-    // Check if the cart exists
-    db.get('SELECT * FROM Panier WHERE panierID = ?', [userID], (err, cart) => {
-        if (err) {
-            console.error('Error checking cart existence:', err.message);
-            res.status(500).json({ error: 'Internal server error' });
-            return;
-        }
-        if (!cart) {
-            res.status(404).json({ error: 'Cart not found' });
-            return;
-        }
-
-        // Check if the watch exists in the Panier table for the specified user
-        db.get('SELECT * FROM Panier WHERE panierID = ? AND montreID = ?', [userID, montreID], (err, watchInCart) => {
-            if (err) {
-                console.error('Error checking watch existence in the cart:', err.message);
-                res.status(500).json({ error: 'Internal server error' });
-                return;
-            }
-            if (!watchInCart) {
-                res.status(404).json({ error: 'Watch not found in the cart' });
-                return;
-            }
-
-            removeWatchFromCart();
-        });
-    });
-
-    function removeWatchFromCart() {
-        // Remove the watch from the Panier table
-        db.run('DELETE FROM Panier WHERE panierID = ? AND montreID = ?', [userID, montreID], function (err) {
-            if (err) {
-                console.error('Error removing watch from the cart:', err.message);
-                res.status(500).json({ error: 'Internal server error' });
-                return;
-            }
-
-            // Fetch the updated cart for this specific user
-            db.all('SELECT * FROM Panier WHERE panierID = ?', [userID], (err, updatedCart) => {
-                if (err) {
-                    console.error('Error fetching updated cart:', err.message);
-                    res.status(500).json({ error: 'Internal server error' });
-                    return;
-                }
-                res.json(updatedCart); // Return the updated list of the cart as a JSON response
-            });
-        });
-    }
-});
 
 app.post('/inscription', (req, res) => {
   const { email, password } = req.body;
@@ -339,7 +259,7 @@ app.post('/connexion', (req, res) => {
     return res.status(400).json({ message: 'Invalid data' });
   }
 
-  // Check if the user exists and validate the password (you should use a secure password hashing mechanism)
+  // Check if the user exists and validate the password
   const selectUserQuery = 'SELECT * FROM User WHERE email = ? AND password = ?';
   db.get(selectUserQuery, [email, password], (err, user) => {
     if (err) {
