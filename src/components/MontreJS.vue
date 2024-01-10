@@ -4,6 +4,7 @@
     <ul class="m-5">
       <li class="border my-2 p-3" v-for="watch in watches" :key="watch.montreID">
         {{ watch.montreID }} | {{ watch.boitier_nom }} / {{ watch.boitier_texture }} | {{ watch.pierre_nom }} | {{ watch.bracelet_texture }} | {{ watch.pierre_prix + watch.boitier_prix + watch.bracelet_prix }}
+        <RouterLink :to="`/watch/${watch.montreID}`">CLICK HERE</RouterLink>
       </li>
     </ul>
   </div>

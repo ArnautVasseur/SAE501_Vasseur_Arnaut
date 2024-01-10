@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ConnexionView from '../views/ConnexionView.vue'
 import DeconnexionView from '../views/DeconnexionView.vue'
 import WatchView from '../views/WatchesView.vue'
-import CustomView from '../views/WatchSingle.vue'
+import WatchDetails from '../views/WatchDetails.vue'
 import CartView from '../views/CartView.vue'
 
 const router = createRouter({
@@ -25,9 +25,10 @@ const router = createRouter({
       component: WatchView
     },
     {
-    path: '/custom',
-    name: 'WatchDetail',
-    component: CustomView,
+    path: '/watch/:id',
+    name: 'watch-details',
+    component: WatchDetails,
+    props: true,
   },
     {
       path: '/signout',

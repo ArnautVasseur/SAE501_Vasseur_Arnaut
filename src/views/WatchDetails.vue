@@ -6,6 +6,7 @@ import MontreSingle from '@/components/MontreSingle.vue';
     <MontreSingle/>
 </template>
 
+
 <style>
 
 </style>
