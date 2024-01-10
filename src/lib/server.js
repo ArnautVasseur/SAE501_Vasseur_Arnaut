@@ -1,11 +1,13 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const path = require('path');
 
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -38,6 +40,19 @@ app.get('/montres', (req, res) => {
       JOIN Boitier ON Montre.boitierID = Boitier.boitierID
       JOIN Pierre ON Montre.pierreID = Pierre.pierreID
       JOIN Bracelet ON Montre.braceletID = Bracelet.braceletID;`,
+     (err, rows) => {
+        if (err) {
+            console.error('Error fetching watches:', err.message);
+            res.status(500).json({ error: 'Internal server error' });
+            return;
+        }
+        res.json(rows); // Return the list of recipes as JSON response
+    });
+});
+
+app.get('/montres/0', (req, res) => {
+    db.all(
+      `SELECT * from Montre WHERE montreID = 0`,
      (err, rows) => {
         if (err) {
             console.error('Error fetching watches:', err.message);
@@ -205,12 +220,10 @@ app.post('/panier/:userID/remove/montre', (req, res) => {
 });
 
 app.post('/inscription', (req, res) => {
-  const { NomUser, MotDePasse } = req.body;
+  const { email, password } = req.body;
 
-  const hashMotDePasse = bcrypt.hashSync(MotDePasse, 10);
-
-  const query = 'INSERT INTO Utilisateurs (NomUser, MotDePasse) VALUES (?, ?)';
-  db.run(query, [NomUser, hashMotDePasse], function (err) {
+  const query = 'INSERT INTO Utilisateurs (email, password) VALUES (?, ?)';
+  db.run(query, [email, password], function (err) {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -220,16 +233,12 @@ app.post('/inscription', (req, res) => {
 });
 
 app.post('/connexion', (req, res) => {
-  const { NomUser, MotDePasse } = req.body;
+  const { userID } = req.body;
 
-  const query = 'SELECT * FROM Utilisateurs WHERE NomUser = ?';
-  db.get(query, [NomUser], (err, Utilisateur) => {
+  const query = 'SELECT * FROM Utilisateurs WHERE userID = ?';
+  db.get(query, [userID], (err, Utilisateur) => {
     if (err) {
       return res.status(500).json({ error: err.message });
-    }
-
-    if (!Utilisateur || !bcrypt.compareSync(MotDePasse, Utilisateur.MotDePasse)) {
-      return res.status(401).json({ error: 'Nom d\'utilisateur ou mot de passe incorrect' });
     }
 
     // Créer un token JWT

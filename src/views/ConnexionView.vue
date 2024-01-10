@@ -2,7 +2,7 @@
   <div>
     <h1>Inscription</h1>
     <form @submit.prevent="inscrire">
-      <label>Nom d'utilisateur:</label>
+      <label>Email :</label>
       <input v-model="inscriptionNom" required />
 
       <label>Mot de passe:</label>
@@ -13,7 +13,7 @@
 
     <h1>Connexion</h1>
     <form @submit.prevent="connecter">
-      <label>Nom d'utilisateur:</label>
+      <label>Email :</label>
       <input v-model="connexionNom" required />
 
       <label>Mot de passe:</label>
@@ -40,8 +40,8 @@ export default {
     inscrire() {
       axios
         .post('http://localhost:3000/login', {
-          NomUser: this.inscriptionNom,
-          MotDePasse: this.inscriptionMotDePasse
+          email: this.inscriptionNom,
+          password: this.inscriptionMotDePasse
         })
         .then((response) => {
           console.log('Inscription réussie, ID utilisateur:', response.data.UserID)
@@ -53,8 +53,8 @@ export default {
     connecter() {
       axios
         .post('http://localhost:3000/login', {
-          NomUser: this.connexionNom,
-          MotDePasse: this.connexionMotDePasse
+          email: this.connexionNom,
+          password: this.connexionMotDePasse
         })
         .then((response) => {
           console.log('Connexion réussie, ID utilisateur:', response.data.UserID)

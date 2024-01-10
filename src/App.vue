@@ -4,12 +4,12 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
   <header>
-    <nav class="flex flex-row gap-10 border border-black m-10 p-5">
+    <nav class="flex flex-row justify-center gap-10 border border-black m-10 p-5">
       <RouterLink to="/">Page d'accueil</RouterLink>
       <RouterLink to="/watch">Montres Prédéfinies</RouterLink>
-      <RouterLink to="/watch">Personnalisation</RouterLink>
+      <RouterLink to="/custom">Personnalisation</RouterLink>
       <RouterLink to="/login">Compte</RouterLink>
-      <RouterLink to="/panier">Votre panier</RouterLink>
+      <RouterLink to="/cart">Votre panier</RouterLink>
     </nav>
   </header>
   <RouterView />
