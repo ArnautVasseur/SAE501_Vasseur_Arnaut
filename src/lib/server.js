@@ -224,6 +224,25 @@ app.get('/panier/:userID', (req, res) => {
         });
 });
 
+app.delete('/panier/:userID/delete', (req, res) => {
+  const { userID } = req.params;
+  const { montreID } = req.body;
+
+  const deleteQuery = `
+    DELETE FROM Panier
+    WHERE userID = ? AND montreID = ?;
+  `;
+
+  db.run(deleteQuery, [userID, montreID], (err) => {
+    if (err) {
+      console.error('Erreur lors de la suppresion d\'une montre dans un panier:', err.message);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+    } else {
+      res.json({ message: 'Montre supprimé du panier avec succès' });
+    }
+  });
+})
+
 app.post('/panier/ajout', (req, res) => {
   const { UserID, MontreID } = req.body
 
