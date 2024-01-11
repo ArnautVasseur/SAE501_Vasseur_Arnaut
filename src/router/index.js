@@ -5,6 +5,7 @@ import WatchView from '../views/WatchesView.vue'
 import WatchDetails from '../views/WatchDetails.vue'
 import CreateView from '../views/CreateView.vue'
 import PanierView from '../views/CartView.vue'
+import ModifyView from '../views/ModifyView.vue'
 import AuthGuard from "../utils/routeGuard"
 
 const router = createRouter({
@@ -36,6 +37,13 @@ const router = createRouter({
       path: '/create',
       name: 'create',
       component: CreateView,
+      beforeEnter: AuthGuard,
+    },
+    {
+      path: '/modify/:watchID',
+      name: 'modify',
+      component: ModifyView,
+      props: true,
       beforeEnter: AuthGuard,
     },
     {
