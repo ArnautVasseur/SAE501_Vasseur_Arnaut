@@ -17,6 +17,7 @@ onMounted(() => {
     <nav class="flex flex-row justify-center gap-10 border border-black m-10 p-5">
       <RouterLink to="/">Page d'accueil</RouterLink>
       <RouterLink to="/watch">Montres Prédéfinies</RouterLink>
+      <RouterLink to="/create">Créez votre montre</RouterLink>
       <RouterLink to="/login">Inscription/Connexion</RouterLink>
     </nav>
   </header>

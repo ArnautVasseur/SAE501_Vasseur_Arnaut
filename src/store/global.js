@@ -9,7 +9,6 @@ export const useGlobalStore = defineStore('global', {
   actions: {
     setToken(token) {
       if (token) {
-        console.log("je suisla")
         this.token = token
         localStorage.setItem('token', JSON.stringify(this.token))
       }

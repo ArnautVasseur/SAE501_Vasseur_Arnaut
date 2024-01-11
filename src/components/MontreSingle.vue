@@ -10,32 +10,8 @@
     <div v-else>
       Loading...
     </div>
-
+    <button @click="ajouterAuPanier">Ajouter celle-ci à votre panier</button>
     <!-- Edit form -->
-    <form @submit.prevent="ajouterAuPanier" method="post" class="flex flex-col gap-3 m-5">
-      <label for="boitier">Boitier:</label>
-      <select v-model="watch.boitier_texture" id="boitier" name="boitier" class="w-[250px]">
-        <option v-for="boitier in boitiers" :key="boitier.boitierID" :value="boitier.texture">
-          {{ boitier.texture }}  /  {{ boitier.prix }}€
-        </option>
-      </select>
-
-      <label for="pierre">Ornement de pierres:</label>
-      <select v-model="watch.pierre_nom" id="pierre" name="pierre" class="w-[175px]">
-        <option v-for="pierre in pierres" :key="pierre.pierreID" :value="pierre.nom">
-          {{ pierre.nom }} / {{ pierre.prix }}€
-        </option>
-      </select>
-
-      <label for="bracelet">Texture de bracelet:</label>
-      <select v-model="watch.bracelet_texture" id="bracelet" name="bracelet" class="w-[250px]">
-        <option v-for="bracelet in bracelets" :key="bracelet.braceletID" :value="bracelet.texture">
-          {{ bracelet.texture }} / {{ bracelet.prix }}€
-        </option>
-      </select>
-
-      <button type="submit" class="border p-5 m-3">Ajouter au panier</button>
-    </form>
   </div>
 </template>
 
@@ -87,13 +63,6 @@ onMounted(async () => {
 // Methods
 const ajouterAuPanier = () => {
   const token = globalStore.token
-
-  // Check if the user is connected
-  if (!token) {
-    // Redirect the user to the login page
-    $router.push('/login');
-    return;
-  }
 
   const valeur = ref({});
   valeur.value.UserID = token;

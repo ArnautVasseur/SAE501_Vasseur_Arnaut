@@ -226,11 +226,10 @@ app.get('/panier/:userID', (req, res) => {
 
 app.post('/panier/ajout', (req, res) => {
   const { UserID, MontreID } = req.body
-  console.log(req.body)
 
   const insertQuery = `
     INSERT INTO Panier (userID, montreID)
-    VALUES (?, ?)
+    VALUES (?, ?);
   `;
 
   db.run(insertQuery, [UserID, MontreID], (err) => {
@@ -239,6 +238,29 @@ app.post('/panier/ajout', (req, res) => {
       res.status(500).json({ error: 'Erreur interne du serveur' });
     } else {
       res.json({ message: 'Montre ajoutée au panier avec succès' });
+    }
+  });
+});
+
+app.post('/montre/ajout', (req, res) => {
+  const {
+    MontreID,
+    BoitierID,
+    PierreID,
+    BraceletID,
+  } = req.body;
+
+  const insertQuery = `
+    INSERT INTO Montre (MontreID, BoitierID, PierreID, BraceletID)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.run(insertQuery, [MontreID, BoitierID, PierreID, BraceletID], (err) => {
+    if (err) {
+      console.error('Erreur lors de l\'ajout de la montre:', err.message);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+    } else {
+      res.json({ message: 'Montre ajoutée avec succès' });
     }
   });
 });

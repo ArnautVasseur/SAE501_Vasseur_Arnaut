@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ConnexionView from '../views/ConnexionView.vue'
-import DeconnexionView from '../views/DeconnexionView.vue'
 import WatchView from '../views/WatchesView.vue'
 import WatchDetails from '../views/WatchDetails.vue'
+import CreateView from '../views/CreateView.vue'
 import PanierView from '../views/CartView.vue'
-import TestView from '../views/test.vue'
 import AuthGuard from "../utils/routeGuard"
 
 const router = createRouter({
@@ -34,20 +33,16 @@ const router = createRouter({
       beforeEnter: AuthGuard,
     },
     {
-      path: '/signout',
-      name: 'signout',
-      component: DeconnexionView,
+      path: '/create',
+      name: 'create',
+      component: CreateView,
+      beforeEnter: AuthGuard,
     },
     {
       path: '/panier/:id',
       name: 'panier',
       component: PanierView,
       props: true,
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: TestView,
     },
   ]
 })
