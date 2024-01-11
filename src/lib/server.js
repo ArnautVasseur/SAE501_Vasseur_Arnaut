@@ -246,20 +246,35 @@ app.delete('/panier/:userID/delete', (req, res) => {
 app.post('/panier/ajout', (req, res) => {
   const { UserID, MontreID } = req.body
 
-  const insertQuery = `
+  const insertPanierQuery = `
     INSERT INTO Panier (userID, montreID)
     VALUES (?, ?);
   `;
 
-  db.run(insertQuery, [UserID, MontreID], (err) => {
+  const insertCopieMontreQuery = `
+    INSERT INTO CopieMontre (userID, montreID)
+    VALUES (?, ?);
+  `;
+
+  // Insert into Panier table
+  db.run(insertPanierQuery, [UserID, MontreID], (err) => {
     if (err) {
       console.error('Erreur lors de l\'ajout de la montre au panier:', err.message);
       res.status(500).json({ error: 'Erreur interne du serveur' });
     } else {
-      res.json({ message: 'Montre ajoutée au panier avec succès' });
+      // Insert into CopieMontre table
+      db.run(insertCopieMontreQuery, [UserID, MontreID], (err) => {
+        if (err) {
+          console.error('Erreur lors de l\'ajout de la montre à la copie:', err.message);
+          res.status(500).json({ error: 'Erreur interne du serveur' });
+        } else {
+          res.json({ message: 'Montre ajoutée au panier et à la copie avec succès' });
+        }
+      });
     }
   });
 });
+
 
 app.post('/montre/ajout', (req, res) => {
   const {

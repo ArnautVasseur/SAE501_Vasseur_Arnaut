@@ -1,2 +1,2 @@
-DELETE FROM Montre
-WHERE montreID = 12;
+DELETE FROM Panier
+WHERE panierID >= 15;
