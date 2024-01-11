@@ -8,7 +8,14 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -217,6 +224,25 @@ app.get('/panier/:userID', (req, res) => {
         });
 });
 
+app.post('/panier/ajout', (req, res) => {
+  const { UserID, MontreID } = req.body
+  console.log(req.body)
+
+  const insertQuery = `
+    INSERT INTO Panier (userID, montreID)
+    VALUES (?, ?)
+  `;
+
+  db.run(insertQuery, [UserID, MontreID], (err) => {
+    if (err) {
+      console.error('Erreur lors de l\'ajout de la montre au panier:', err.message);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+    } else {
+      res.json({ message: 'Montre ajoutée au panier avec succès' });
+    }
+  });
+});
+
 
 app.post('/inscription', (req, res) => {
   const { email, password } = req.body;
@@ -251,7 +277,6 @@ app.post('/inscription', (req, res) => {
 });
 
 app.post('/connexion', (req, res) => {
-  const secretKey = 'g23jh2g4kjn1k5v2&!hskjf5n1';
   const { email, password } = req.body;
 
   // Validate the incoming data (you should add more validation)
@@ -272,11 +297,39 @@ app.post('/connexion', (req, res) => {
     }
 
     // User authenticated, generate a JWT token
-    const token = jwt.sign({ userId: user.userID, email: user.email }, secretKey, { expiresIn: '1h' });
+    // const token = jwt.sign({ userId: user.userID, email: user.email }, 'token', { expiresIn: '1h' });
 
-    res.json({ token });
+    res.json({ userId : user.userID });
   });
 });
+
+// Middleware pour vérifier le token sur les requêtes protégées
+function verifierToken(req, res, next) {
+  const token = req.header('Authorization');
+  console.log(token);
+
+  if (!token) {
+    return res.status(401).json({ error: 'Accès non autorisé' });
+  }
+
+  jwt.verify(token, 'token', (err, decoded) => {
+    if (err) {
+      console.error('Erreur lors de la vérification du token:', err);
+      return res.status(401).json({ error: 'Token non valide' });
+    }
+
+    const { userID } = decoded;
+
+    if (!userID) {
+      return res.status(401).json({ error: 'Token ne contient pas l\'UserID' });
+    }
+
+    console.log('Token valide pour l\'UserID:', userID);
+
+    req.userID = decoded.userID;
+    next();
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server is running on port http://localhost:${port}`);
