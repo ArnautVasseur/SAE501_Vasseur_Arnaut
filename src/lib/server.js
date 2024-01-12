@@ -368,6 +368,24 @@ app.post('/montre/ajout', (req, res) => {
   });
 });
 
+app.delete('/montre/delete/:montreID', (req, res) => {
+  const { montreID } = req.params
+
+  const DeleteQuery = `
+    DELETE FROM Montre
+    WHERE montreID = ?;
+  `;
+
+  db.run(DeleteQuery, [montreID], (err) => {
+    if (err) {
+      console.error('Erreur lors de l\'ajout de la montre:', err.message);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+    } else {
+      res.json({ message: 'Montre supprimée avec succès' });
+    }
+  });
+});
+
 // Updated endpoint to handle the PUT request for updating CopieMontre with copiemontreID
 app.put('/modification/:watchID', (req, res) => {
   const watchID = req.params.watchID;

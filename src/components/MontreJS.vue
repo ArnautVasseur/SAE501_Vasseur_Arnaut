@@ -39,7 +39,8 @@
     <ul class="m-5">
       <li v-for="(watch) in filteredWatches.slice(0, visibleItemCount)" :key="watch.montreID" class="border my-2 p-3">
         {{ watch.boitier_nom }} / {{ watch.boitier_texture }} | {{ watch.pierre_nom }} | {{ watch.bracelet_texture }} | {{ watch.pierre_prix + watch.boitier_prix + watch.bracelet_prix }}
-        <RouterLink :to="`/watch/${watch.montreID}`">CLICK HERE</RouterLink>
+        <RouterLink class="m-5" :to="`/watch/${watch.montreID}`">CLICK HERE</RouterLink>
+        <button @click="deleteWatch(index, watch.montreID)">DELETE</button>
       </li>
     </ul>
 
@@ -107,6 +108,20 @@ export default {
     showLess() {
       this.visibleItemCount -= 3; // Augmentez de 3 (ou ajustez selon vos besoins)
     },
+    deleteWatch(index, montreID) {
+      const confirmDelete = window.confirm('Are you sure you want to delete this watch?');
+      if (confirmDelete) {
+        axios.delete(`http://localhost:3000/montre/delete/${montreID}`)
+          .then(response => {
+            // Remove the deleted watch from the local watches array
+            this.watches.splice(index, 1);
+            console.log(response.data.message);
+          })
+          .catch(error => {
+            console.error('Error deleting watch:', error.message);
+          });
+      }
+    },
   },
   mounted() {
     // Make a GET request to your Express server endpoint
@@ -143,6 +158,6 @@ export default {
       .catch((error) => {
         console.error('Erreur lors de la récupération des bracelets', error)
       })
-  },
+  }
 };
 </script>
