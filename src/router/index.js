@@ -7,6 +7,7 @@ import CreateView from '../views/CreateView.vue'
 import PanierView from '../views/CartView.vue'
 import ModifyView from '../views/ModifyView.vue'
 import AuthGuard from "../utils/routeGuard"
+import test from "../views/test.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,11 @@ const router = createRouter({
       name: 'panier',
       component: PanierView,
       props: true,
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test
     },
   ]
 })

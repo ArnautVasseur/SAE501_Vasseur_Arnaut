@@ -37,14 +37,16 @@
 
     <!-- Watch List -->
     <ul class="m-5">
-      <li v-for="(watch, index) in filteredWatches.slice(0, visibleItemCount)" :key="watch.montreID" class="border my-2 p-3">
+      <li v-for="(watch) in filteredWatches.slice(0, visibleItemCount)" :key="watch.montreID" class="border my-2 p-3">
         {{ watch.boitier_nom }} / {{ watch.boitier_texture }} | {{ watch.pierre_nom }} | {{ watch.bracelet_texture }} | {{ watch.pierre_prix + watch.boitier_prix + watch.bracelet_prix }}
         <RouterLink :to="`/watch/${watch.montreID}`">CLICK HERE</RouterLink>
       </li>
     </ul>
 
-    <button @click="showMore">Afficher plus</button>
-    <button @click="showLess">Afficher moins</button>
+    <div class="flex gap-5 m-5">
+      <button class="border p-3" @click="showMore">Afficher plus</button>
+      <button class="border p-3" @click="showLess">Afficher moins</button>
+    </div>
   </div>
 </template>
 

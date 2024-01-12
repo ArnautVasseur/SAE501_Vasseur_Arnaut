@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1 class="m-5">Détails des montres</h1>
-    <!-- Display details for the selected watch using the id parameter -->
     <div v-if="watch" class="border m-5 p-3 flex flex-col gap-3">
       <p>Texture boitier = {{ watch.boitier_texture }}</p>
       <p>Ornement pierres = {{ watch.pierre_nom }}</p>
@@ -11,7 +10,6 @@
       Loading...
     </div>
     <button @click="ajouterAuPanier">Ajouter celle-ci à votre panier</button>
-    <!-- Edit form -->
   </div>
 </template>
 
@@ -22,17 +20,13 @@ import axios from 'axios';
 import { useGlobalStore } from '@/store/global';
 const globalStore = useGlobalStore()
 
-
-
 const props = defineProps(['id']);
-
 
 const watch = ref({});
 const montres = ref([]);
 const boitiers = ref([]);
 const pierres = ref([]);
 const bracelets = ref([]);
-
 
 onMounted(async () => {
   try {
@@ -60,7 +54,6 @@ onMounted(async () => {
   }
 });
 
-// Methods
 const ajouterAuPanier = () => {
   const token = globalStore.token
 
@@ -68,10 +61,8 @@ const ajouterAuPanier = () => {
   valeur.value.UserID = token;
   valeur.value.MontreID = watch.value.montreID;
 
-  // Configure the header with the token
   console.log(valeur.value);
 
-  // Send the request to add the watch to the cart
   axios
     .post('http://localhost:3000/panier/ajout', valeur.value)
     .then((response) => {

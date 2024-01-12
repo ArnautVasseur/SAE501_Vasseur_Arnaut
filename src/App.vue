@@ -19,6 +19,7 @@ onMounted(() => {
       <RouterLink to="/watch">Montres Prédéfinies</RouterLink>
       <RouterLink to="/create">Créez votre montre</RouterLink>
       <RouterLink to="/login">Inscription/Connexion</RouterLink>
+      <RouterLink v-if="globalStore.token" :to="`/panier/${globalStore.token}`">Panier</RouterLink>
     </nav>
   </header>
   <RouterView />

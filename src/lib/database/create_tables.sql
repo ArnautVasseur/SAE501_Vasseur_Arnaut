@@ -32,3 +32,10 @@ CREATE TABLE Bracelet(
     texture TEXT,
     prix INTEGER
 );
+
+CREATE Montre(
+    montreID INTEGER PRIMARY KEY AUTOINCREMENT,
+    boitierID INTEGER,
+    pierreID INTEGER,
+    braceletID INTEGER
+);
