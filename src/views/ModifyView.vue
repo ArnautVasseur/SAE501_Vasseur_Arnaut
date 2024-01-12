@@ -3,7 +3,9 @@ import ThreeSceneForm from '@/components/ThreeSceneForm.vue';
 </script>
 
 <template>
-  <ThreeSceneForm/>
+  <div>
+    <ThreeSceneForm/>
+  </div>
 </template>
 
 <style>

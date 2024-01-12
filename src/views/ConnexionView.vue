@@ -1,29 +1,28 @@
 <template>
-  <main>
-    <h1>Page Login</h1>
+  <main class="m-10">
+    <div class="flex w-full justify-evenly border border-black p-5">
+      <div>
+        <h2 class="text-lg">Inscription</h2>
 
-    <div>
-      <h2>Inscription</h2>
+        <form @submit.prevent="inscription" method="post" class="flex flex-col gap-7">
+          <input class="p-2 border" v-model="inscriptionData.email" type="text" name="email" id="inscription-email" required placeholder="Email">
+          <input class="p-2 border" v-model="inscriptionData.password" type="password" name="mdp" id="inscription-mdp" required placeholder="Mot de Passe">
 
-      <form @submit.prevent="inscription" method="post">
-        <input v-model="inscriptionData.email" type="text" name="email" id="inscription-email" required placeholder="Email">
-        <input v-model="inscriptionData.password" type="password" name="mdp" id="inscription-mdp" required placeholder="Mot de Passe">
+          <input class="border border-black hover:bg-black hover:text-white py-3 duration-300" type="submit" value="Inscription">
+        </form>
+      </div>
 
-        <input type="submit" value="Je m'inscris">
-      </form>
-    </div>
+      <div>
+        <h2 class="text-lg">Connexion</h2>
 
-    <div>
-      <h2>Connexion</h2>
+        <form @submit.prevent="connexion" method="post" class="flex flex-col gap-7">
+          <input class="p-2 border" v-model="loginData.email" type="text" name="email" id="login-email" required placeholder="Email">
+          <input class="p-2 border" v-model="loginData.password" type="password" name="mdp" id="login-mdp" required placeholder="Mot de Passe">
 
-      <form @submit.prevent="connexion" method="post">
-        <input v-model="loginData.email" type="text" name="email" id="login-email" required placeholder="Email">
-        <input v-model="loginData.password" type="password" name="mdp" id="login-mdp" required placeholder="Mot de Passe">
-
-        <input type="submit" value="Je me connect">
-      </form>
-    </div>
-
+          <input class="border border-black hover:bg-black hover:text-white py-3 duration-300" type="submit" value="Connexion">
+        </form>
+      </div>
+  </div>
   </main>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="m-10 flex flex-col gap-5 border justify-center">
     <h1>Ajouter une Montre</h1>
 
     <form @submit.prevent="addWatch">

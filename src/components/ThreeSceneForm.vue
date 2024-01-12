@@ -1,198 +1,198 @@
 <template>
-  <div>
-    <canvas ref="canvas" />
-    <div class="mt-2">
+  <div class="flex flex-col justify-center items-center">
+    <canvas ref="canvas" class="border border-black" />
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Texture du Bracelet :</h2>
       </div>
       <div class="flex gap-2">
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTexture('texture-cuir-blanc.jpg')"
         >
           Cuir Blanc
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTexture('texture-tissus-or.jpg')"
         >
           Tissu Or
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTexture('texture-tissus-marron.jpg')"
         >
           Tissu Marron
         </button>
       </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Texture du Boitier Rond</h2>
       </div>
       <div class="flex gap-2">
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_black01.png')"
         >
           Black 01
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_black02.png')"
         >
           Black 02
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_fluo01.png')"
         >
           Fluo
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_mickey.png')"
         >
           Mickey
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_white01.png')"
         >
           White 01
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_white02.png')"
         >
           White 02
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_white03.png')"
         >
           White 03
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_white04.png')"
         >
           White 04
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierRond('background_white05.png')"
         >
           White 05
         </button>
       </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Texture du Boitier Carre</h2>
       </div>
       <div class="flex gap-2">
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_black01.png')"
         >
           Black 01
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_black02.png')"
         >
           Black 02
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_fluo01.png')"
         >
           Fluo
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_mickey.png')"
         >
           Mickey
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_white01.png')"
         >
           White 01
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_white02.png')"
         >
           White 02
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_white03.png')"
         >
           White 03
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_white04.png')"
         >
           White 04
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changeTextureBoitierCarre('background_white05.png')"
         >
           White 05
         </button>
       </div>
     </div>
-    <div class="flex gap-2 my-2">
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Couleur du Fermoir</h2>
       </div>
       <input type="color" @input="handleColorChange" />
     </div>
-    <div class="mt-2">
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Type de Pierre Précieuse</h2>
       </div>
       <div class="flex gap-2">
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changePierreColor('rubis')"
         >
           Rubis
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changePierreColor('diamant')"
         >
           Diamant
         </button>
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="changePierreColor('émeraude')"
         >
           Émeraude
         </button>
       </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Choix du boitier :</h2>
       </div>
       <div class="flex gap-2">
         <button
-          class="border-black border-2 px-2 py-1 mx-2 my-1 rounded-lg"
+          class="border-black border-2 px-2 py-1 mx-2 my-1 "
           @click="toggleBoitierRond"
         >
           Boitier Rond / Carré
         </button>
       </div>
     </div>
-    <div class="mt-2">
+    <div class="mt-2 border p-3 text-center">
       <div>
         <h2 class="font-bold">Background Image:</h2>
       </div>
@@ -244,7 +244,7 @@ const initScene = () => {
   );
 
   renderer = new THREE.WebGLRenderer({ canvas: canvas.value });
-  renderer.setSize(1300, 700);
+  renderer.setSize(600, 350);
   renderer.setClearColor(0x222222, 1);
   controls = new OrbitControls(camera, renderer.domElement);
 
