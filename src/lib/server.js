@@ -393,6 +393,36 @@ app.put('/modification/:watchID', (req, res) => {
   );
 });
 
+app.delete('/panier/:userID/delete/all', (req, res) => {
+  const { userID } = req.params;
+
+  const deleteCopieQuery = `
+    DELETE FROM CopieMontre
+    WHERE userID = ?;
+  `;
+
+  const deletePanierQuery = `
+    DELETE FROM Panier
+    WHERE userID = ?;
+  `;
+
+  // Delete from Panier table
+  db.run(deletePanierQuery, [userID], (errPanier) => {
+    if (errPanier) {
+      console.error('Erreur lors de la suppression d\'une montre dans le panier:', errPanier.message);
+      res.status(500).json({ error: 'Erreur interne du serveur' });
+    } else {
+      db.run(deleteCopieQuery, [userID], (errPanier) => {
+        if (errPanier) {
+          console.error('Erreur lors de la suppression d\'une montre dans le panier:', errPanier.message);
+          res.status(500).json({ error: 'Erreur interne du serveur' });
+        } else {
+          res.json({ message: 'Montre supprimée du panier et de la copie avec succès' });
+        }
+      });
+    }
+  });
+});
 
 app.post('/inscription', (req, res) => {
   const { email, password } = req.body;

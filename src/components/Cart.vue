@@ -12,6 +12,7 @@
           <p>Texture du bracelet = {{ watchItem.bracelet_texture }}</p>
           <button @click="deleteFromCart(watchItem.montreID)">Supprimer du panier</button>
           <button @click="modifyCartItem(watchItem)">Modifier</button>
+          <button @click="deleteAll">Supprimer l'entierté du panier</button>
         </li>
       </ul>
     </div>
@@ -61,6 +62,17 @@ export default {
         .catch((error) => {
           console.error("Erreur lors de la suppression de la montre du panier", error.response.data.error);
           alert("Erreur lors de la suppression de la montre du panier. Veuillez réessayer.");
+        });
+    },
+    deleteFromCart() {
+      axios
+        .delete(`http://localhost:3000/panier/${userID}/delete/all`)
+        .then((response) => {
+          console.log(response.data.message);
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la suppression du panier", error.response.data.error);
+          alert("Erreur lors de la suppression du panier. Veuillez réessayer.");
         });
     },
     modifyCartItem(watchItem) {
