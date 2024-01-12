@@ -192,6 +192,17 @@
         </button>
       </div>
     </div>
+    <div class="mt-2">
+      <div>
+        <h2 class="font-bold">Background Image:</h2>
+      </div>
+      <div class="flex gap-2">
+        <select @change="changeBackgroundImage" v-model="selectedBackground">
+          <option value="fondbois.jpg">fond bois background 1</option>
+          <option value="fondbois2.jpg">fond bois background 2</option>
+        </select>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -239,6 +250,13 @@ const initScene = () => {
 
   var loader = new ColladaLoader();
   loader.load("/models/montre.dae", onLoaded, onProgress, onError);
+};
+
+const selectedBackground = ref("fondbois.jpg");
+
+const changeBackgroundImage = () => {
+  const backgroundImage = selectedBackground.value;
+  changeBackground(`/img/${backgroundImage}`);
 };
 
 const updateClockHands = () => {
@@ -295,6 +313,13 @@ const handleColorChange = (event) => {
   const newColor = event.target.value;
   changeFermoirColor(newColor);
 };
+
+const changeBackground = (textureUrl) => {
+  const textureLoader = new TextureLoader();
+  const backgroundTexture = textureLoader.load(textureUrl);
+  scene.background = backgroundTexture;
+};
+
 const changeFermoirColor = (color) => {
   // Convertir la couleur hexadécimale en décimal
   const decimalColor = parseInt(color.slice(1), 16);
@@ -427,8 +452,11 @@ var onError = function (data) {
   console.error(data);
 };
 
+
+
 onMounted(() => {
   initScene();
+  changeBackground('/img/fondbois.jpg');
   animate();
 });
 
