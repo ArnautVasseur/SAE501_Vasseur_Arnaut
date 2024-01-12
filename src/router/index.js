@@ -40,11 +40,9 @@ const router = createRouter({
       beforeEnter: AuthGuard,
     },
     {
-      path: '/modify/:watchID',
+      path: '/modify',
       name: 'modify',
       component: ModifyView,
-      props: true,
-      beforeEnter: AuthGuard,
     },
     {
       path: '/panier/:id',
