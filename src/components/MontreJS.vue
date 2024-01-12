@@ -37,11 +37,14 @@
 
     <!-- Watch List -->
     <ul class="m-5">
-      <li class="border my-2 p-3" v-for="watch in filteredWatches" :key="watch.montreID">
+      <li v-for="(watch, index) in filteredWatches.slice(0, visibleItemCount)" :key="watch.montreID" class="border my-2 p-3">
         {{ watch.boitier_nom }} / {{ watch.boitier_texture }} | {{ watch.pierre_nom }} | {{ watch.bracelet_texture }} | {{ watch.pierre_prix + watch.boitier_prix + watch.bracelet_prix }}
         <RouterLink :to="`/watch/${watch.montreID}`">CLICK HERE</RouterLink>
       </li>
     </ul>
+
+    <button @click="showMore">Afficher plus</button>
+    <button @click="showLess">Afficher moins</button>
   </div>
 </template>
 
@@ -59,7 +62,8 @@ export default {
       boitiers: [],
       pierres: [],
       bracelets: [],
-      prixfilter:[200, 250, 850]
+      prixfilter: [200, 250, 850],
+      visibleItemCount: 3,
     };
   },
   computed: {
@@ -71,10 +75,17 @@ export default {
         this.filterByBraceletTexture(watch) &&
         this.filterByTotalPrice(watch)
       );
-    }
+    },
+    visibleWatches() {
+      return this.filteredWatches.slice(0, this.visibleItemCount);
+    },
+    // Indicateur pour afficher ou non le bouton "Afficher plus"
+    showMoreButton() {
+      return this.visibleItemCount < this.filteredWatches.length;
+    },
   },
   methods: {
-    // Filter functions for each criterion
+    // Fonctions de filtre pour chaque critère
     filterByBoitierTexture(watch) {
       return watch.boitier_texture.includes(this.boitierTextureFilter);
     },
@@ -86,6 +97,13 @@ export default {
     },
     filterByTotalPrice(watch) {
       return this.totalPriceFilter === null || watch.pierre_prix + watch.boitier_prix + watch.bracelet_prix <= this.totalPriceFilter;
+    },
+    // Fonction pour afficher plus de montres
+    showMore() {
+      this.visibleItemCount += 3; // Augmentez de 3 (ou ajustez selon vos besoins)
+    },
+    showLess() {
+      this.visibleItemCount -= 3; // Augmentez de 3 (ou ajustez selon vos besoins)
     },
   },
   mounted() {
