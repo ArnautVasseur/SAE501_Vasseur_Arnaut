@@ -19,14 +19,14 @@ import { TextureLoader } from "three/src/loaders/TextureLoader.js";
 
 const props = defineProps({
     boitier_texture : String,
-    boitier_forme : String,
     bracelet_texture : String,
-    pierre_couleur : String,
-    main_color : String,
-    fond_nom : String
+    boitier_nom : String,
+    pierre_nom : String
 })
 
 const proprietes = toRefs(props)
+
+console.log("coucou", proprietes)
   
 const canvasContainer = ref(null);
 const canvas = ref(null);
@@ -58,8 +58,8 @@ const initScene = () => {
     renderer.setClearColor(0x222222, 1);
     controls = new OrbitControls(camera, renderer.domElement);
 
-    const textureLoaderScene = new THREE.TextureLoader();
-    scene.background = textureLoaderScene.load(`/images/fond_${proprietes.fond_nom.value}.jpg`);
+    // const textureLoaderScene = new THREE.TextureLoader();
+    // scene.background = textureLoaderScene.load(`/images/fond_${proprietes.fond_nom.value}`);
   
     var loader = new ColladaLoader();
     loader.load("/models/montre.dae", onLoaded, onProgress, onError);
@@ -92,41 +92,58 @@ function onLoaded(collada) {
   
     aiguilleHeures = objects.getObjectByName("aiguille_heures");
     aiguilleHeures.material = new THREE.MeshBasicMaterial({
-        color: proprietes.main_color.value,
+        // color: proprietes.main_color.value,
+        color: "#888",
     });
 
     aiguilleMinutes = objects.getObjectByName("aiguille_minutes");
     aiguilleMinutes.material = new THREE.MeshBasicMaterial({
-        color: proprietes.main_color.value,
+        // color: proprietes.main_color.value,
+        color: "#888",
     });
 
     aiguilleSecondes = objects.getObjectByName("aiguille_secondes");
     aiguilleSecondes.material = new THREE.MeshBasicMaterial({
-        color: proprietes.main_color.value,
+        // color: proprietes.main_color.value,
+        color: "#888",
     });
   
-    if (proprietes.boitier_forme.value == "boitier_rond"){
+    if (proprietes.boitier_nom.value == "boitier_rond"){
         boitierForme = objects.getObjectByName("boitier_rond");
-    } else if (proprietes.boitier_forme.value == "boitier_carre"){
+    } else if (proprietes.boitier_nom.value == "boitier_carre"){
         boitierForme= objects.getObjectByName("boitier_carre");
     }
     
     const textureLoaderBoitier = new TextureLoader();
-    const textureBoitier = textureLoaderBoitier.load(`/images/background_${proprietes.boitier_texture.value}.png`);
+    const textureBoitier = textureLoaderBoitier.load(`/images/${proprietes.boitier_texture.value}`);
     
-    boitierForme.material = new THREE.MeshBasicMaterial({
+    boitierForme.material[1] = new THREE.MeshBasicMaterial({
         map: textureBoitier,
     });
   
     iBouton = objects.getObjectByName("bouton");
     iBouton.material = new THREE.MeshBasicMaterial({
-        color: proprietes.main_color.value,
-    });
+        // color: proprietes.main_color.value,
+        color: "#000" 
+      });
   
     iPierre = objects.getObjectByName("pierre");
-    iPierre.material = new THREE.MeshBasicMaterial({
-        color: proprietes.pierre_couleur.value,
-    });
+
+    if (proprietes.pierre_nom.value == "rubis"){
+      iPierre.material = new THREE.MeshBasicMaterial({
+          color: "#ff0000",
+      });
+    }
+    else if (proprietes.pierre_nom.value == "émeraude"){
+      iPierre.material = new THREE.MeshBasicMaterial({
+          color: "#00ff00",
+      });
+    } 
+    else {
+      iPierre.material = new THREE.MeshBasicMaterial({
+          color: "#0000ff",
+      });
+    }
   
     let iPierre2 = iPierre.clone();
     iPierre2.position.y -= 38;
@@ -141,12 +158,13 @@ function onLoaded(collada) {
   
     iBracelet = objects.getObjectByName("bracelet");
     const textureLoader = new TextureLoader();
-    const texture = textureLoader.load(`/images/texture-${proprietes.bracelet_texture.value}.jpg`);
+    const texture = textureLoader.load(`/images/${proprietes.bracelet_texture.value}`);
     iBracelet.material = new THREE.MeshBasicMaterial({ map: texture });
   
     iFermoir = objects.getObjectByName("fermoir");
     iFermoir.material = new THREE.MeshBasicMaterial({
-        color: proprietes.main_color.value,
+        color: "#000",
+        // color: proprietes.main_color.value,
     });
   
     scene.add(

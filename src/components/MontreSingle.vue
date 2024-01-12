@@ -1,8 +1,10 @@
 <template>
   <div>
     <h1 class="m-5">Détails des montres</h1>
+    <ThreeScene v-bind="watch"/>
     <div v-if="watch" class="border m-5 p-3 flex flex-col gap-3">
       <p>Texture boitier = {{ watch.boitier_texture }}</p>
+      <p>Forme boitier = {{ watch.boitier_nom }}</p>
       <p>Ornement pierres = {{ watch.pierre_nom }}</p>
       <p>Texture du bracelet = {{ watch.bracelet_texture }}</p>
     </div>
@@ -14,6 +16,7 @@
 </template>
 
 <script setup>
+import ThreeScene from './ThreeScene.vue';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import axios from 'axios';
